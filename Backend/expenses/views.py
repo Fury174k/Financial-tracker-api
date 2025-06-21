@@ -76,6 +76,13 @@ class AccountListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+class AccountDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AccountSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Account.objects.filter(user=self.request.user)
+
 class UserDetailView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -237,4 +244,4 @@ class MarkNotificationReadView(APIView):
             notif.save()
             return Response({'message': 'Marked as read'})
         except Notification.DoesNotExist:
-            return Response({'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)      
+            return Response({'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
