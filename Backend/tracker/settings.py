@@ -81,8 +81,9 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
 }
+
 
 WSGI_APPLICATION = 'tracker.wsgi.application'
 
@@ -136,6 +137,8 @@ STATIC_URL = 'static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+GOOGLE_CLIENT_ID = "229716200894-s5qp9sofhrh9diu39que111jlnhljg4q.apps.googleusercontent.com"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

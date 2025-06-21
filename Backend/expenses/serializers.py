@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Expense, User, Account
+from .models import Expense, User, Account, Transaction, Budget, SavingsGoal, SavingsContribution, PredictionLog, Notification
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
@@ -36,10 +36,44 @@ class UserSerializer(serializers.ModelSerializer):
 class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expense
-        fields = ['id', 'amount', 'category', 'description', 'date']
+        fields = ['id', 'account', 'amount', 'category', 'description', 'date']
         read_only_fields = ['user']
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ['id', 'bank_name', 'account_number', 'balance']
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ['id', 'account', 'amount', 'category', 'title', 'description', 'date', 'type']
+        read_only_fields = ['user']
+
+class BudgetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Budget
+        fields = ['id', 'user', 'month', 'year', 'amount']
+        read_only_fields = ['user']
+
+class SavingsGoalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SavingsGoal
+        fields = '__all__'
+        read_only_fields = ['user', 'created_at']
+
+class SavingsContributionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SavingsContribution
+        fields = '__all__'
+        read_only_fields = ['user', 'date']
+
+class PredictionLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PredictionLog
+        fields = '__all__'
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = ['id', 'title', 'message', 'created_at', 'is_read', 'is_active']
