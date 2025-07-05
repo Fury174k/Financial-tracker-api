@@ -25,4 +25,5 @@ threadpoolctl
 gunicorn
 whitenoise
 requests
+sklearn
 
