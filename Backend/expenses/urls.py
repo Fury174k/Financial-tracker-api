@@ -18,6 +18,7 @@ from .views import (
     NotificationListView,
     MarkNotificationReadView,
     AccountDetailView,                # <-- add this import
+    UserProfileView,
 )
 from rest_framework.authtoken.views import obtain_auth_token
 from .analytics import WeeklySpendingView, TopExpensesView, CategorySpendingView, PredictionView, WeeklyPredictionView, MonthlyPredictionView
@@ -49,5 +50,6 @@ urlpatterns = [
     path('notifications/<int:pk>/', NotificationDeleteView.as_view(), name='notification-delete'),
     path('notifications/<int:pk>/read/', MarkNotificationReadView.as_view(), name='notification-read'),
     path('accounts/<int:pk>/', AccountDetailView.as_view(), name='account-detail'),  # <-- add this line
+    path('profile/', UserProfileView.as_view(), name='user-profile'),
 ]
 

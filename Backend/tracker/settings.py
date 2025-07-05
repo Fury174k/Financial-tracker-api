@@ -138,6 +138,13 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Add this to allow user-uploaded files (profile pictures) to be served in development
+if DEBUG:
+    from django.conf import settings
+    from django.conf.urls.static import static
+    urlpatterns = []
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 GOOGLE_CLIENT_ID = "229716200894-s5qp9sofhrh9diu39que111jlnhljg4q.apps.googleusercontent.com"
 
 # Default primary key field type
