@@ -24,3 +24,5 @@ six
 threadpoolctl
 gunicorn
 whitenoise
+requests
+
