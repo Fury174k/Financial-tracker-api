@@ -1,0 +1,24 @@
+# Django and DRF
+Django==5.2.2
+djangorestframework==3.16.0
+# CORS
+django-cors-headers==4.7.0
+# Data Science
+numpy==2.3.0
+pandas==2.3.0
+scipy==1.15.3
+# Google Auth
+google-auth==2.40.3
+# Pillow for image processing
+Pillow==11.2.1
+# Other dependencies
+python-dateutil
+idna
+certifi
+charset-normalizer
+pyasn1
+pyasn1-modules
+cachetools
+joblib
+six
+threadpoolctl
