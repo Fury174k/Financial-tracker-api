@@ -22,3 +22,5 @@ cachetools
 joblib
 six
 threadpoolctl
+gunicorn
+whitenoise
