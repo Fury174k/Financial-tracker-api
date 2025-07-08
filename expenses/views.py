@@ -36,7 +36,7 @@ class RegisterView(generics.CreateAPIView):
             }, status=201)
         except Exception as e:
             print("ERROR:", e)
-        return Response({"detail": str(e)}, status=500)
+            return Response({"detail": str(e)}, status=500)
 
     
 
