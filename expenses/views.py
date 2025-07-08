@@ -24,14 +24,19 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
     def create(self, request, *args, **kwargs):
+        print("INCOMING DATA:", request.data)
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'user': serializer.data,
-            'token': token.key
-        }, status=201)
+        try:
+            serializer.is_valid(raise_exception=True)
+            user = serializer.save()
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({
+                'user': serializer.data,
+                'token': token.key
+            }, status=201)
+        except Exception as e:
+            print("ERROR:", e)
+        return Response({"detail": str(e)}, status=500)
 
     
 
