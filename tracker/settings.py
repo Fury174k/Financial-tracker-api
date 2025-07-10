@@ -31,13 +31,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "financial-tracker-api-1wlt.onrender.com",
+    "financial-app-ui.vercel.app",
     "localhost",
     "127.0.0.1"
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "https://financial-app-ui.vercel.app",
-    "https://financial-app-gypdx693r-fury174ks-projects.vercel.app",
     "http://localhost:3000",
 ]
 
