@@ -29,9 +29,20 @@ SECRET_KEY = 'django-insecure-%zh522q12&id*h#_qu%b*029payc-@^!++nj%yy3co-0)-as$p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*'
-                 ]
-CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS = [
+    "financial-tracker-api-1wlt.onrender.com",
+    "financial-app-ui.vercel.app",
+    "localhost",
+    "127.0.0.1"
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://financial-app-ui.vercel.app",
+    "http://localhost:3000",
+]
+
+# Use if your frontend sends cookies or auth headers
+CORS_ALLOW_CREDENTIALS = True
 
 
 # Application definition
