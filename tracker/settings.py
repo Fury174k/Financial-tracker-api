@@ -31,7 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "financial-tracker-api-1wlt.onrender.com",
-    "financial-app-ui.vercel.app",
     "localhost",
     "127.0.0.1"
 ]
@@ -40,10 +39,6 @@ CORS_ALLOWED_ORIGINS = [
     "https://financial-app-ui.vercel.app",
     "http://localhost:3000",
 ]
-
-# Use if your frontend sends cookies or auth headers
-CORS_ALLOW_CREDENTIALS = True
-
 
 # Application definition
 
@@ -61,6 +56,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -68,7 +64,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = 'tracker.urls'
