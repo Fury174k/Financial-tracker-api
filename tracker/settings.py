@@ -37,7 +37,7 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://financial-app-ui.vercel.app",
+    r"^https:\/\/.*\.vercel\.app$",
     "http://localhost:3000",
 ]
 
