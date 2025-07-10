@@ -26,4 +26,5 @@ gunicorn
 whitenoise
 requests
 scikit-learn
-
+psycopg2-binary
+dj-database-url

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 AUTH_USER_MODEL = 'expenses.User'
 
@@ -28,8 +29,7 @@ SECRET_KEY = 'django-insecure-%zh522q12&id*h#_qu%b*029payc-@^!++nj%yy3co-0)-as$p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['financial-tracker-api-iq2a.onrender.com',
-                 'financial-app-ui.vercel.app',
+ALLOWED_HOSTS = ['*'
                  ]
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -94,10 +94,9 @@ WSGI_APPLICATION = 'tracker.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
 }
 
 
