@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions
 from .models import Expense, Account, Transaction, Budget, SavingsGoal, SavingsContribution, PredictionLog, Notification
 from .serializers import ExpenseSerializer, AccountSerializer, TransactionSerializer, BudgetSerializer, SavingsGoalSerializer, SavingsContributionSerializer, PredictionLogSerializer, NotificationSerializer
+from django.db import transaction
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
@@ -107,15 +108,31 @@ class TransactionListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        transaction = serializer.save(user=self.request.user)
-        if transaction.type == 'expense':
-            transaction.account.balance -= transaction.amount
-        elif transaction.type == 'income':
-            transaction.account.balance += transaction.amount
-        transaction.account.save()
+        with transaction.atomic():
+            new_transaction = serializer.save(user=self.request.user)
+            self._update_account_balance(new_transaction, 'create')
 
     def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user).order_by('-date')
+
+    def _update_account_balance(self, transaction_obj, operation):
+        """Update account balance based on transaction type and operation"""
+        account = transaction_obj.account
+        amount = transaction_obj.amount
+        
+        if operation == 'create':
+            if transaction_obj.type == 'expense':
+                account.balance -= amount
+            elif transaction_obj.type == 'income':
+                account.balance += amount
+        elif operation == 'delete':
+            # Reverse the original transaction
+            if transaction_obj.type == 'expense':
+                account.balance += amount  # Add back the expense
+            elif transaction_obj.type == 'income':
+                account.balance -= amount  # Subtract the income
+        
+        account.save()
 
 class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
@@ -124,6 +141,45 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user)
+
+    def perform_update(self, serializer):
+        with transaction.atomic():
+            # Get the original transaction to reverse its effect
+            original_transaction = self.get_object()
+            
+            # Reverse the original transaction's balance effect
+            self._update_account_balance(original_transaction, 'delete')
+            
+            # Save the updated transaction
+            updated_transaction = serializer.save()
+            
+            # Apply the new transaction's balance effect
+            self._update_account_balance(updated_transaction, 'create')
+
+    def perform_destroy(self, instance):
+        with transaction.atomic():
+            # Reverse the transaction's balance effect before deletion
+            self._update_account_balance(instance, 'delete')
+            instance.delete()
+
+    def _update_account_balance(self, transaction_obj, operation):
+        """Update account balance based on transaction type and operation"""
+        account = transaction_obj.account
+        amount = transaction_obj.amount
+        
+        if operation == 'create':
+            if transaction_obj.type == 'expense':
+                account.balance -= amount
+            elif transaction_obj.type == 'income':
+                account.balance += amount
+        elif operation == 'delete':
+            # Reverse the original transaction
+            if transaction_obj.type == 'expense':
+                account.balance += amount  # Add back the expense
+            elif transaction_obj.type == 'income':
+                account.balance -= amount  # Subtract the income
+        
+        account.save()
 
 class GoogleAuthView(APIView):
     permission_classes = [permissions.AllowAny]
